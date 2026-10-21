@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.duoc.galpones.ui.alertas.AlertasScreen
 import com.duoc.galpones.ui.components.PantallaPlaceholder
+import com.duoc.galpones.ui.resumen.ResumenScreen
 
 @Composable
 fun AppNavHost(navController: NavHostController = rememberNavController()) {
@@ -50,11 +51,7 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
         }
 
         composable(Rutas.RESUMEN) {
-            PantallaPlaceholder(
-                titulo = "Resumen para jefatura",
-                descripcion = "Pantalla pendiente (Integrante B).",
-                onVolver = volver
-            )
+            ResumenScreen(modifier = Modifier.statusBarsPadding())
         }
 
         // ---- Integrante A (reemplaza el placeholder por su pantalla) ----
