@@ -22,6 +22,9 @@ interface AlertaDao {
     @Query("SELECT COUNT(*) FROM alertas WHERE estado = :estado")
     fun contarPorEstado(estado: String): Flow<Int>
 
+    @Query("SELECT COUNT(*) FROM alertas")
+    suspend fun contar(): Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertar(alerta: AlertaEntity): Long
 
