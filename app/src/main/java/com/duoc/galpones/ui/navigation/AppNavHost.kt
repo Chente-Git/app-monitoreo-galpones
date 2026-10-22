@@ -1,13 +1,17 @@
 package com.duoc.galpones.ui.navigation
 
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.duoc.galpones.ui.alertas.AlertasScreen
 import com.duoc.galpones.ui.components.PantallaPlaceholder
+import com.duoc.galpones.ui.resumen.ResumenScreen
 
 @Composable
 fun AppNavHost(navController: NavHostController = rememberNavController()) {
@@ -16,11 +20,10 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
 
     NavHost(navController = navController, startDestination = Rutas.LOGIN) {
 
-        // ---- Integrante B ----
         composable(Rutas.LOGIN) {
             PantallaPlaceholder(
-                titulo = "Inicio de sesión",
-                descripcion = "Pantalla pendiente (Integrante B).",
+                titulo = "Iniciar sesión",
+                descripcion = "Pantalla pendiente (Integrante B): login con selector de perfil.",
                 enlaces = listOf<Pair<String, () -> Unit>>(
                     "Entrar (simulado)" to {
                         navController.navigate(Rutas.INICIO) {
@@ -32,14 +35,7 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
         }
 
         composable(Rutas.ALERTAS) {
-            PantallaPlaceholder(
-                titulo = "Alertas",
-                descripcion = "Pantalla pendiente (Integrante B).",
-                enlaces = listOf<Pair<String, () -> Unit>>(
-                    "Registrar acción (alerta 1)" to { navController.navigate(Rutas.accion(1L)) }
-                ),
-                onVolver = volver
-            )
+            AlertasScreen(modifier = Modifier.statusBarsPadding())
         }
 
         composable(
@@ -55,11 +51,7 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
         }
 
         composable(Rutas.RESUMEN) {
-            PantallaPlaceholder(
-                titulo = "Resumen para jefatura",
-                descripcion = "Pantalla pendiente (Integrante B).",
-                onVolver = volver
-            )
+            ResumenScreen(modifier = Modifier.statusBarsPadding())
         }
 
         // ---- Integrante A (reemplaza el placeholder por su pantalla) ----
