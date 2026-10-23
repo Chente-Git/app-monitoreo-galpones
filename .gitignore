@@ -15,3 +15,7 @@
 local.properties
 .DS_Store
 .kotlin/
+
+.idea/inspectionProfiles/
+.idea/deploymentTargetSelector.xml
+.idea/deviceManager.xml
