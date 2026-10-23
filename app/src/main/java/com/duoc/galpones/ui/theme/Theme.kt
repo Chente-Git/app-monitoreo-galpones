@@ -1,57 +1,68 @@
 package com.duoc.galpones.ui.theme
 
-import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+private val EsquemaClaro = lightColorScheme(
+    primary = VerdePrimario,
+    onPrimary = VerdeSobrePrimario,
+    primaryContainer = VerdeContenedor,
+    onPrimaryContainer = VerdeSobreContenedor,
+    secondary = SecundarioClaro,
+    onSecondary = SobreSecundarioClaro,
+    secondaryContainer = ContenedorSecundarioClaro,
+    onSecondaryContainer = SobreContenedorSecundarioClaro,
+    tertiary = TerciarioClaro,
+    onTertiary = SobreTerciarioClaro,
+    tertiaryContainer = ContenedorTerciarioClaro,
+    onTertiaryContainer = SobreContenedorTerciarioClaro,
+    background = FondoClaro,
+    onBackground = SobreFondoClaro,
+    surface = FondoClaro,
+    onSurface = SobreFondoClaro,
+    surfaceVariant = VarianteSuperficieClaro,
+    onSurfaceVariant = SobreVarianteSuperficieClaro,
+    outline = BordeClaro,
+    error = ErrorClaro,
+    onError = SobreErrorClaro
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+private val EsquemaOscuro = darkColorScheme(
+    primary = VerdePrimarioOscuro,
+    onPrimary = SobreVerdePrimarioOscuro,
+    primaryContainer = VerdeContenedorOscuro,
+    onPrimaryContainer = SobreVerdeContenedorOscuro,
+    secondary = SecundarioOscuro,
+    onSecondary = SobreSecundarioOscuro,
+    secondaryContainer = ContenedorSecundarioOscuro,
+    onSecondaryContainer = SobreContenedorSecundarioOscuro,
+    tertiary = TerciarioOscuro,
+    onTertiary = SobreTerciarioOscuro,
+    tertiaryContainer = ContenedorTerciarioOscuro,
+    onTertiaryContainer = SobreContenedorTerciarioOscuro,
+    background = FondoOscuro,
+    onBackground = SobreFondoOscuro,
+    surface = FondoOscuro,
+    onSurface = SobreFondoOscuro,
+    surfaceVariant = VarianteSuperficieOscuro,
+    onSurfaceVariant = SobreVarianteSuperficieOscuro,
+    outline = BordeOscuro,
+    error = ErrorOscuro,
+    onError = SobreErrorOscuro
 )
+
+
 
 @Composable
 fun MonitoreoGalponesTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    modoOscuro: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
-
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = if (modoOscuro) EsquemaOscuro else EsquemaClaro,
         typography = Typography,
         content = content
     )
