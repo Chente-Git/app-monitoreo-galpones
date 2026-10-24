@@ -1,5 +1,6 @@
 package com.duoc.galpones.ui.alertas
 
+import android.Manifest
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,8 +22,12 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +36,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.duoc.galpones.GalponesApp
 import com.duoc.galpones.domain.model.EstadoGalpon
+import com.duoc.galpones.ui.permisos.DialogoPermisoRechazado
+import com.duoc.galpones.ui.permisos.ResultadoPermiso
+import com.duoc.galpones.ui.permisos.rememberManejadorPermiso
 
 @Composable
 fun AlertasScreen(
@@ -44,6 +52,27 @@ fun AlertasScreen(
     )
 ) {
     val estado by viewModel.estado.collectAsState()
+
+    var mostrarDialogo by remember { mutableStateOf(false) }
+    var rechazoPermanente by remember { mutableStateOf(false) }
+
+    val manejadorPermiso = rememberManejadorPermiso(
+        Manifest.permission.POST_NOTIFICATIONS
+    ) { resultado ->
+        when (resultado) {
+            ResultadoPermiso.CONCEDIDO -> mostrarDialogo = false
+            ResultadoPermiso.RECHAZADO -> {
+                rechazoPermanente = false
+                mostrarDialogo = true
+            }
+            ResultadoPermiso.RECHAZADO_PERMANENTE -> {
+                rechazoPermanente = true
+                mostrarDialogo = true
+            }
+        }
+    }
+
+    LaunchedEffect(Unit) { manejadorPermiso.solicitar() }
 
     Box(modifier = modifier.fillMaxSize()) {
         when {
@@ -71,6 +100,23 @@ fun AlertasScreen(
                     )
                 }
             }
+        }
+
+        if (mostrarDialogo) {
+            DialogoPermisoRechazado(
+                mensaje = "Las notificaciones te avisan cuando un galpón entra en estado crítico. " +
+                        "Sin este permiso no recibirás esos avisos.",
+                permanente = rechazoPermanente,
+                onReintentar = {
+                    mostrarDialogo = false
+                    manejadorPermiso.solicitar()
+                },
+                onAbrirAjustes = {
+                    mostrarDialogo = false
+                    manejadorPermiso.abrirAjustes()
+                },
+                onCerrar = { mostrarDialogo = false }
+            )
         }
     }
 }
