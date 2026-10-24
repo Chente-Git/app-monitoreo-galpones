@@ -39,6 +39,7 @@ import com.duoc.galpones.domain.model.EstadoGalpon
 import com.duoc.galpones.ui.permisos.DialogoPermisoRechazado
 import com.duoc.galpones.ui.permisos.ResultadoPermiso
 import com.duoc.galpones.ui.permisos.rememberManejadorPermiso
+import com.duoc.galpones.ui.permisos.PermisosSesion
 
 @Composable
 fun AlertasScreen(
@@ -72,7 +73,12 @@ fun AlertasScreen(
         }
     }
 
-    LaunchedEffect(Unit) { manejadorPermiso.solicitar() }
+    LaunchedEffect(Unit) {
+        if (!PermisosSesion.notificacionesSolicitadas) {
+            PermisosSesion.notificacionesSolicitadas = true
+            manejadorPermiso.solicitar()
+        }
+    }
 
     Box(modifier = modifier.fillMaxSize()) {
         when {
