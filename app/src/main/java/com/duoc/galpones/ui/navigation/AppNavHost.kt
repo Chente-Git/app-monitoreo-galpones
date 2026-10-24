@@ -1,5 +1,9 @@
 package com.duoc.galpones.ui.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,12 +20,41 @@ import com.duoc.galpones.ui.components.PantallaPlaceholder
 import com.duoc.galpones.ui.login.LoginScreen
 import com.duoc.galpones.ui.resumen.ResumenScreen
 
+private const val DURACION_TRANSICION = 300
+
 @Composable
 fun AppNavHost(navController: NavHostController = rememberNavController()) {
 
     val volver: () -> Unit = { navController.popBackStack() }
 
-    NavHost(navController = navController, startDestination = Rutas.LOGIN) {
+    NavHost(
+        navController = navController,
+        startDestination = Rutas.LOGIN,
+        enterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(DURACION_TRANSICION)
+            ) + fadeIn(animationSpec = tween(DURACION_TRANSICION))
+        },
+        exitTransition = {
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(DURACION_TRANSICION)
+            ) + fadeOut(animationSpec = tween(DURACION_TRANSICION))
+        },
+        popEnterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.End,
+                animationSpec = tween(DURACION_TRANSICION)
+            ) + fadeIn(animationSpec = tween(DURACION_TRANSICION))
+        },
+        popExitTransition = {
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.End,
+                animationSpec = tween(DURACION_TRANSICION)
+            ) + fadeOut(animationSpec = tween(DURACION_TRANSICION))
+        }
+    ) {
 
         composable(Rutas.LOGIN) {
             LoginScreen(
