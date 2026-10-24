@@ -3,6 +3,7 @@ package com.duoc.galpones.di
 import android.content.Context
 import com.duoc.galpones.data.fakeapi.FakeAlertasApi
 import com.duoc.galpones.data.local.AppDatabase
+import com.duoc.galpones.data.red.MonitorRed
 import com.duoc.galpones.data.repository.AccionRepositoryImpl
 import com.duoc.galpones.data.repository.AlertaRepositoryImpl
 import com.duoc.galpones.domain.repository.AccionRepository
@@ -23,4 +24,6 @@ class AppContainer(context: Context) {
     val accionRepository: AccionRepository by lazy {
         AccionRepositoryImpl(database.accionDao())
     }
+
+    val monitorRed: MonitorRed by lazy { MonitorRed(context.applicationContext) }
 }
