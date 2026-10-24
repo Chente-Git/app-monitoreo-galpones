@@ -3,6 +3,7 @@ package com.duoc.galpones.ui.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.duoc.galpones.data.fakeapi.FakeUsuariosApi
+import com.duoc.galpones.domain.SesionActual
 import com.duoc.galpones.domain.ValidadorLogin
 import com.duoc.galpones.domain.model.Rol
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -72,6 +73,7 @@ class LoginViewModel : ViewModel() {
                     )
                 }
             } else {
+                SesionActual.iniciar(usuario)
                 _estado.update { it.copy(cargando = false, ingresoExitoso = true) }
             }
         }
