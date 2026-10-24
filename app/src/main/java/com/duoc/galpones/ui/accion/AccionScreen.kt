@@ -1,5 +1,9 @@
 package com.duoc.galpones.ui.accion
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,8 +15,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -24,6 +28,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -32,6 +39,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.duoc.galpones.GalponesApp
 import com.duoc.galpones.domain.model.TipoAccion
 import com.duoc.galpones.ui.components.CampoFormulario
+import com.duoc.galpones.ui.components.MensajeErrorAnimado
+import kotlinx.coroutines.delay
 
 @Composable
 fun AccionScreen(
@@ -50,9 +59,12 @@ fun AccionScreen(
     )
 ) {
     val estado by viewModel.estado.collectAsState()
+    var mostrarConfirmacion by remember { mutableStateOf(false) }
 
     LaunchedEffect(estado.guardadoExitoso) {
         if (estado.guardadoExitoso) {
+            mostrarConfirmacion = true
+            delay(2500)
             viewModel.guardadoProcesado()
             onGuardado()
         }
@@ -77,7 +89,7 @@ fun AccionScreen(
         if (estado.resumenAlerta.isNotEmpty()) {
             Text(text = estado.resumenAlerta)
         }
-        MensajeError(estado.errorAlerta)
+        MensajeErrorAnimado(estado.errorAlerta)
 
         Text(
             text = "Tipo de acción",
@@ -100,7 +112,7 @@ fun AccionScreen(
                 )
             }
         }
-        MensajeError(estado.errorTipo)
+        MensajeErrorAnimado(estado.errorTipo)
 
         CampoFormulario(
             valor = estado.descripcion,
@@ -113,11 +125,31 @@ fun AccionScreen(
             lineasMinimas = 3
         )
 
-        MensajeError(estado.errorGeneral)
+        MensajeErrorAnimado(estado.errorGeneral)
+
+        AnimatedVisibility(
+            visible = mostrarConfirmacion,
+            enter = fadeIn(tween(250)) + scaleIn(tween(250))
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Filled.CheckCircle,
+                    contentDescription = "Guardado",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(24.dp)
+                )
+                Text(
+                    text = "Acción guardada",
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+            }
+        }
 
         Button(
             onClick = viewModel::onGuardar,
-            enabled = !estado.guardando,
+            enabled = !estado.guardando && !mostrarConfirmacion,
             modifier = Modifier.fillMaxWidth()
         ) {
             if (estado.guardando) {
@@ -132,30 +164,10 @@ fun AccionScreen(
 
         OutlinedButton(
             onClick = onCancelar,
-            enabled = !estado.guardando,
+            enabled = !estado.guardando && !mostrarConfirmacion,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Cancelar")
-        }
-    }
-}
-
-@Composable
-private fun MensajeError(mensaje: String?) {
-    if (mensaje != null) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = Icons.Filled.Error,
-                contentDescription = "Error",
-                tint = MaterialTheme.colorScheme.error,
-                modifier = Modifier.size(18.dp)
-            )
-            Text(
-                text = mensaje,
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(start = 6.dp)
-            )
         }
     }
 }

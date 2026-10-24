@@ -12,11 +12,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -31,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.duoc.galpones.domain.model.Rol
 import com.duoc.galpones.ui.components.CampoFormulario
+import com.duoc.galpones.ui.components.MensajeErrorAnimado
 
 @Composable
 fun LoginScreen(
@@ -103,8 +102,8 @@ fun LoginScreen(
                 )
             }
         }
-        MensajeError(estado.errorPerfil)
-        MensajeError(estado.errorGeneral)
+        MensajeErrorAnimado(estado.errorPerfil)
+        MensajeErrorAnimado(estado.errorGeneral)
 
         Button(
             onClick = viewModel::onIngresar,
@@ -119,26 +118,6 @@ fun LoginScreen(
             } else {
                 Text("Entrar")
             }
-        }
-    }
-}
-
-@Composable
-private fun MensajeError(mensaje: String?) {
-    if (mensaje != null) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = Icons.Filled.Error,
-                contentDescription = "Error",
-                tint = MaterialTheme.colorScheme.error,
-                modifier = Modifier.size(18.dp)
-            )
-            Text(
-                text = mensaje,
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(start = 6.dp)
-            )
         }
     }
 }
