@@ -1,6 +1,7 @@
 package com.duoc.galpones.ui.alertas
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,6 +35,7 @@ import com.duoc.galpones.domain.model.EstadoGalpon
 @Composable
 fun AlertasScreen(
     modifier: Modifier = Modifier,
+    onAlertaClick: (Long) -> Unit = {},
     viewModel: AlertasViewModel = viewModel(
         factory = AlertasViewModel.Factory(
             (LocalContext.current.applicationContext as GalponesApp)
@@ -63,7 +65,10 @@ fun AlertasScreen(
                     )
                 }
                 items(estado.alertas, key = { it.id }) { alerta ->
-                    TarjetaAlerta(alerta)
+                    TarjetaAlerta(
+                        alerta = alerta,
+                        onClick = { onAlertaClick(alerta.id) }
+                    )
                 }
             }
         }
@@ -71,8 +76,12 @@ fun AlertasScreen(
 }
 
 @Composable
-private fun TarjetaAlerta(alerta: AlertaUi) {
-    Card(modifier = Modifier.fillMaxWidth()) {
+private fun TarjetaAlerta(alerta: AlertaUi, onClick: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+    ) {
         Row(modifier = Modifier.height(IntrinsicSize.Min)) {
             Box(
                 modifier = Modifier

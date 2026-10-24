@@ -9,6 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.duoc.galpones.domain.SesionActual
+import com.duoc.galpones.ui.accion.AccionScreen
 import com.duoc.galpones.ui.alertas.AlertasScreen
 import com.duoc.galpones.ui.components.PantallaPlaceholder
 import com.duoc.galpones.ui.login.LoginScreen
@@ -33,7 +35,10 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
         }
 
         composable(Rutas.ALERTAS) {
-            AlertasScreen(modifier = Modifier.statusBarsPadding())
+            AlertasScreen(
+                onAlertaClick = { id -> navController.navigate(Rutas.accion(id)) },
+                modifier = Modifier.statusBarsPadding()
+            )
         }
 
         composable(
@@ -41,10 +46,11 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
             arguments = listOf(navArgument(Rutas.ARG_ALERTA_ID) { type = NavType.LongType })
         ) { entrada ->
             val alertaId = entrada.arguments?.getLong(Rutas.ARG_ALERTA_ID) ?: 0L
-            PantallaPlaceholder(
-                titulo = "Registrar acción",
-                descripcion = "Pantalla pendiente (Integrante B). Alerta asociada: $alertaId",
-                onVolver = volver
+            AccionScreen(
+                alertaId = alertaId,
+                onGuardado = volver,
+                onCancelar = volver,
+                modifier = Modifier.statusBarsPadding()
             )
         }
 
@@ -65,6 +71,7 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
                     "Alertas" to { navController.navigate(Rutas.ALERTAS) },
                     "Resumen jefatura" to { navController.navigate(Rutas.RESUMEN) },
                     "Cerrar sesión" to {
+                        SesionActual.cerrar()
                         navController.navigate(Rutas.LOGIN) {
                             popUpTo(Rutas.INICIO) { inclusive = true }
                         }
