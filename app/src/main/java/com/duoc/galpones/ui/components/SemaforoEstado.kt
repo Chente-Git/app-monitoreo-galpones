@@ -1,4 +1,4 @@
-Oppackage com.duoc.galpones.ui.components
+package com.duoc.galpones.ui.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.RepeatMode
