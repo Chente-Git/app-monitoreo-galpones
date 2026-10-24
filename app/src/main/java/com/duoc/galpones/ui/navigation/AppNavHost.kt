@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.duoc.galpones.ui.alertas.AlertasScreen
 import com.duoc.galpones.ui.components.PantallaPlaceholder
+import com.duoc.galpones.ui.login.LoginScreen
 import com.duoc.galpones.ui.resumen.ResumenScreen
 
 @Composable
@@ -21,16 +22,13 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
     NavHost(navController = navController, startDestination = Rutas.LOGIN) {
 
         composable(Rutas.LOGIN) {
-            PantallaPlaceholder(
-                titulo = "Iniciar sesión",
-                descripcion = "Pantalla pendiente (Integrante B): login con selector de perfil.",
-                enlaces = listOf<Pair<String, () -> Unit>>(
-                    "Entrar (simulado)" to {
-                        navController.navigate(Rutas.INICIO) {
-                            popUpTo(Rutas.LOGIN) { inclusive = true }
-                        }
+            LoginScreen(
+                onIngresoExitoso = {
+                    navController.navigate(Rutas.INICIO) {
+                        popUpTo(Rutas.LOGIN) { inclusive = true }
                     }
-                )
+                },
+                modifier = Modifier.statusBarsPadding()
             )
         }
 

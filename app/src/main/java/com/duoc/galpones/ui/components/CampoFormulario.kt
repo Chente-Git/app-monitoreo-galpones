@@ -17,6 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.duoc.galpones.ui.theme.MonitoreoGalponesTheme
@@ -33,7 +35,8 @@ fun CampoFormulario(
     ayuda: String? = null,
     tipoTeclado: KeyboardType = KeyboardType.Text,
     unaLinea: Boolean = true,
-    lineasMinimas: Int = 1
+    lineasMinimas: Int = 1,
+    ocultarTexto: Boolean = false
 ) {
     OutlinedTextField(
         value = valor,
@@ -59,6 +62,7 @@ fun CampoFormulario(
         singleLine = unaLinea,
         minLines = lineasMinimas,
         keyboardOptions = KeyboardOptions(keyboardType = tipoTeclado),
+        visualTransformation = if (ocultarTexto) PasswordVisualTransformation() else VisualTransformation.None,
         modifier = modifier.fillMaxWidth()
     )
 }
