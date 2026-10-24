@@ -14,9 +14,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.duoc.galpones.domain.SesionActual
+import com.duoc.galpones.domain.model.Rol
 import com.duoc.galpones.ui.accion.AccionScreen
 import com.duoc.galpones.ui.alertas.AlertasScreen
 import com.duoc.galpones.ui.components.PantallaPlaceholder
+import com.duoc.galpones.ui.galpones.detalle.DetalleScreen
+import com.duoc.galpones.ui.galpones.historial.HistorialScreen
+import com.duoc.galpones.ui.galpones.inicio.InicioScreen
 import com.duoc.galpones.ui.login.LoginScreen
 import com.duoc.galpones.ui.resumen.ResumenScreen
 
@@ -91,25 +95,26 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
             ResumenScreen(modifier = Modifier.statusBarsPadding())
         }
 
-        // ---- Integrante A (reemplaza el placeholder por su pantalla) ----
+        // ---- Integrante A: módulo Monitoreo ----
         composable(Rutas.INICIO) {
-            PantallaPlaceholder(
-                titulo = "Galpones",
-                descripcion = "Pantalla pendiente (Integrante A): lista de galpones.",
-                enlaces = listOf<Pair<String, () -> Unit>>(
-                    "Detalle del galpón 1" to { navController.navigate(Rutas.detalle(1)) },
-                    "Historial" to { navController.navigate(Rutas.HISTORIAL) },
-                    "Umbrales" to { navController.navigate(Rutas.UMBRALES) },
-                    "Registrar observación" to { navController.navigate(Rutas.OBSERVACION) },
-                    "Alertas" to { navController.navigate(Rutas.ALERTAS) },
-                    "Resumen jefatura" to { navController.navigate(Rutas.RESUMEN) },
-                    "Cerrar sesión" to {
-                        SesionActual.cerrar()
-                        navController.navigate(Rutas.LOGIN) {
-                            popUpTo(Rutas.INICIO) { inclusive = true }
-                        }
+            val esJefatura = SesionActual.usuario?.rol == Rol.JEFATURA
+            InicioScreen(
+                onGalponClick = { id -> navController.navigate(Rutas.detalle(id)) },
+                onAlertas = { navController.navigate(Rutas.ALERTAS) },
+                onHistorial = { navController.navigate(Rutas.HISTORIAL) },
+                onUmbrales = { navController.navigate(Rutas.UMBRALES) },
+                onObservacion = { navController.navigate(Rutas.OBSERVACION) },
+                onResumen = if (esJefatura) {
+                    { navController.navigate(Rutas.RESUMEN) }
+                } else {
+                    null
+                },
+                onCerrarSesion = {
+                    SesionActual.cerrar()
+                    navController.navigate(Rutas.LOGIN) {
+                        popUpTo(Rutas.INICIO) { inclusive = true }
                     }
-                )
+                }
             )
         }
 
@@ -118,15 +123,17 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
             arguments = listOf(navArgument(Rutas.ARG_GALPON_ID) { type = NavType.IntType })
         ) { entrada ->
             val galponId = entrada.arguments?.getInt(Rutas.ARG_GALPON_ID) ?: 0
-            PantallaPlaceholder(
-                titulo = "Detalle del galpón",
-                descripcion = "Pantalla pendiente (Integrante A). Galpón: $galponId",
-                onVolver = volver
+            DetalleScreen(
+                galponId = galponId,
+                onVolver = volver,
+                onHistorial = { navController.navigate(Rutas.HISTORIAL) },
+                onUmbrales = { navController.navigate(Rutas.UMBRALES) },
+                onObservacion = { navController.navigate(Rutas.OBSERVACION) }
             )
         }
 
         composable(Rutas.HISTORIAL) {
-            PantallaPlaceholder("Historial", "Pantalla pendiente (Integrante A).", onVolver = volver)
+            HistorialScreen(onVolver = volver)
         }
 
         composable(Rutas.UMBRALES) {
