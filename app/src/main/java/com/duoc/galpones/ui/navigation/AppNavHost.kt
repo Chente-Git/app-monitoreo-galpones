@@ -17,10 +17,11 @@ import com.duoc.galpones.domain.SesionActual
 import com.duoc.galpones.domain.model.Rol
 import com.duoc.galpones.ui.accion.AccionScreen
 import com.duoc.galpones.ui.alertas.AlertasScreen
-import com.duoc.galpones.ui.components.PantallaPlaceholder
 import com.duoc.galpones.ui.galpones.detalle.DetalleScreen
 import com.duoc.galpones.ui.galpones.historial.HistorialScreen
 import com.duoc.galpones.ui.galpones.inicio.InicioScreen
+import com.duoc.galpones.ui.galpones.observacion.ObservacionScreen
+import com.duoc.galpones.ui.galpones.umbrales.UmbralesScreen
 import com.duoc.galpones.ui.login.LoginScreen
 import com.duoc.galpones.ui.resumen.ResumenScreen
 
@@ -137,11 +138,11 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
         }
 
         composable(Rutas.UMBRALES) {
-            PantallaPlaceholder("Umbrales", "Pantalla pendiente (Integrante A).", onVolver = volver)
+            UmbralesScreen(onGuardado = volver, onCancelar = volver)
         }
 
         composable(Rutas.OBSERVACION) {
-            PantallaPlaceholder("Registrar observación", "Pantalla pendiente (Integrante A).", onVolver = volver)
+            ObservacionScreen(onGuardado = volver, onCancelar = volver)
         }
     }
 }
