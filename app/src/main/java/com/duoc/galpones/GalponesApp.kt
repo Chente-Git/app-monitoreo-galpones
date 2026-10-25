@@ -18,5 +18,6 @@ class GalponesApp : Application() {
         super.onCreate()
         container = AppContainer(this)
         scopeApp.launch { container.alertaRepository.cargarInicialesSiVacio() }
+        scopeApp.launch { container.galponRepository.cargarInicialesSiVacio() }
     }
 }
