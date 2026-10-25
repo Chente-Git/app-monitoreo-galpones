@@ -22,7 +22,7 @@ class AlertaRepositoryImpl(
         dao.observarTodas().map { lista -> lista.map { it.toDomain() } }
 
     override fun observarActivas(): Flow<List<Alerta>> =
-        dao.observarActivas().map { lista -> lista.map { it.toDomain() } }
+        dao.observarActivas(EstadoAlerta.RESUELTA.name).map { lista -> lista.map { it.toDomain() } }
 
     override fun contarPorEstado(estado: EstadoAlerta): Flow<Int> =
         dao.contarPorEstado(estado.name)

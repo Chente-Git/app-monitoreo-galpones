@@ -14,7 +14,7 @@ interface AlertaDao {
     fun observarTodas(): Flow<List<AlertaEntity>>
 
     @Query("SELECT * FROM alertas WHERE estado != :estadoResuelta ORDER BY fechaHora DESC")
-    fun observarActivas(estadoResuelta: String = "RESUELTA"): Flow<List<AlertaEntity>>
+    fun observarActivas(estadoResuelta: String): Flow<List<AlertaEntity>>
 
     @Query("SELECT * FROM alertas WHERE id = :id")
     suspend fun obtenerPorId(id: Long): AlertaEntity?
