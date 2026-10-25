@@ -31,6 +31,7 @@ import com.duoc.galpones.domain.model.Rol
 import com.duoc.galpones.ui.components.CampoFormulario
 import com.duoc.galpones.ui.components.MensajeErrorAnimado
 
+/** Pantalla de inicio de sesión: correo, clave y perfil. Si todo es válido pasa a Inicio. */
 @Composable
 fun LoginScreen(
     onIngresoExitoso: () -> Unit,
@@ -39,6 +40,7 @@ fun LoginScreen(
 ) {
     val estado by viewModel.estado.collectAsState()
 
+    // ingresoProcesado evita que el ingreso se repita si la pantalla se redibuja.
     LaunchedEffect(estado.ingresoExitoso) {
         if (estado.ingresoExitoso) {
             viewModel.ingresoProcesado()
@@ -122,6 +124,7 @@ fun LoginScreen(
     }
 }
 
+/** Texto que ve la persona para cada perfil. */
 private fun Rol.etiqueta(): String = when (this) {
     Rol.OPERARIO -> "Operario"
     Rol.SUPERVISOR -> "Supervisor"

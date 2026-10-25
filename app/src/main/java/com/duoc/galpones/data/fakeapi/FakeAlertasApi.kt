@@ -8,7 +8,9 @@ import kotlinx.coroutines.delay
 /** API simulada: devuelve alertas fijas con un retardo, como si viniera de un servidor. */
 object FakeAlertasApi {
 
+    /** Siete alertas de ejemplo con distintos niveles y estados, para probar la lista y el resumen. */
     suspend fun obtenerAlertas(): List<Alerta> {
+        // El retardo simula la espera de una respuesta de red.
         delay(1200)
         val ahora = System.currentTimeMillis()
         val minuto = 60_000L

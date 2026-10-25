@@ -1,5 +1,6 @@
 package com.duoc.galpones.domain.validation
 
+/** Error por campo (null si está bien). esValido es true cuando ningún campo tiene error. */
 data class ResultadoValidacionObservacion(
     val errorGalpon: String? = null,
     val errorDescripcion: String? = null
@@ -8,8 +9,10 @@ data class ResultadoValidacionObservacion(
         get() = errorGalpon == null && errorDescripcion == null
 }
 
+/** Reglas del formulario de observación. Sin Android: se puede probar con tests unitarios. */
 object ValidadorObservacion {
 
+    /** Largo permitido del texto, en caracteres, sin contar espacios al inicio ni al final. */
     const val LARGO_MINIMO = 10
     const val LARGO_MAXIMO = 200
 
@@ -23,6 +26,7 @@ object ValidadorObservacion {
         else -> null
     }
 
+    /** Revisa todos los campos juntos, para mostrar todos los errores a la vez. */
     fun validar(galponId: Int?, descripcion: String): ResultadoValidacionObservacion =
         ResultadoValidacionObservacion(
             errorGalpon = validarGalpon(galponId),

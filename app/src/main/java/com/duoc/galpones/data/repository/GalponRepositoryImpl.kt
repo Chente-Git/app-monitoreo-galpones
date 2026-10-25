@@ -13,12 +13,14 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
+/** Fuente de galpones y mediciones: la UI lee de Room y la FakeApi solo llena tablas vacías. */
 class GalponRepositoryImpl(
     private val galponDao: GalponDao,
     private val medicionDao: MedicionDao,
     private val api: FakeGalponesApi
 ) : GalponRepository {
 
+    /** Evita que dos llamadas a la vez carguen los datos iniciales duplicados. */
     private val mutex = Mutex()
 
     override fun observarGalpones(): Flow<List<Galpon>> =
@@ -34,6 +36,7 @@ class GalponRepositoryImpl(
         medicionDao.observarUltima(galponId).map { it?.toDomain() }
 
     override fun observarMediciones(galponId: Int?): Flow<List<Medicion>> {
+        // Sin galpón elegido se devuelve el historial de todos.
         val origen = if (galponId == null) {
             medicionDao.observarTodas()
         } else {
@@ -52,6 +55,7 @@ class GalponRepositoryImpl(
 
     override suspend fun cargarInicialesSiVacio() {
         mutex.withLock {
+            // Se revisa dentro del candado: la segunda llamada ya encuentra la tabla llena.
             if (galponDao.contar() == 0) {
                 galponDao.insertarTodos(api.obtenerGalpones().map { it.toEntity() })
             }

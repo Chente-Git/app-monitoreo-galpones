@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
+/** Fila de la tabla mediciones. Tiene índice por galponId para filtrar el historial. */
 @Entity(tableName = "mediciones", indices = [Index("galponId")])
 data class MedicionEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,

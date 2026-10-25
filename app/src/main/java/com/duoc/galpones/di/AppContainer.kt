@@ -22,6 +22,7 @@ import com.duoc.galpones.platform.vibracion.Vibrador
  */
 class AppContainer(context: Context) {
 
+    /** Todo se crea con lazy: cada objeto nace la primera vez que alguien lo usa. */
     val database: AppDatabase by lazy { AppDatabase.obtener(context) }
 
     val alertaRepository: AlertaRepository by lazy {

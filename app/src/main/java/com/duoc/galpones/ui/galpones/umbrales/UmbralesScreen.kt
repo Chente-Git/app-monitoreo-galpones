@@ -36,6 +36,7 @@ import com.duoc.galpones.ui.components.SelectorGalpon
 import com.duoc.galpones.ui.components.contenedorApp
 import kotlinx.coroutines.delay
 
+/** Formulario para editar los umbrales de un galpón. Al guardar confirma y vuelve atrás. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UmbralesScreen(
@@ -48,6 +49,7 @@ fun UmbralesScreen(
 ) {
     val estado by viewModel.estado.collectAsState()
 
+    // Muestra la confirmación 1,8 s, limpia el formulario y vuelve a la pantalla anterior.
     LaunchedEffect(estado.guardadoExitoso) {
         if (estado.guardadoExitoso) {
             delay(1800)

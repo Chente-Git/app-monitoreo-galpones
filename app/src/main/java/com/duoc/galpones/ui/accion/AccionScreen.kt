@@ -42,6 +42,7 @@ import com.duoc.galpones.ui.components.CampoFormulario
 import com.duoc.galpones.ui.components.MensajeErrorAnimado
 import kotlinx.coroutines.delay
 
+/** Formulario para registrar qué se hizo ante una alerta. Al guardar confirma y vuelve atrás. */
 @Composable
 fun AccionScreen(
     alertaId: Long,
@@ -61,6 +62,7 @@ fun AccionScreen(
     val estado by viewModel.estado.collectAsState()
     var mostrarConfirmacion by remember { mutableStateOf(false) }
 
+    // Muestra la confirmación 2,5 s y vuelve. Mientras tanto los botones quedan desactivados.
     LaunchedEffect(estado.guardadoExitoso) {
         if (estado.guardadoExitoso) {
             mostrarConfirmacion = true
@@ -172,6 +174,7 @@ fun AccionScreen(
     }
 }
 
+/** Texto que ve la persona para cada tipo de acción. */
 private fun TipoAccion.etiqueta(): String = when (this) {
     TipoAccion.REVISION_VENTILACION -> "Revisión de ventilación"
     TipoAccion.AJUSTE_DE_EQUIPOS -> "Ajuste de equipos"

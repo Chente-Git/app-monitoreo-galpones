@@ -27,6 +27,7 @@ import com.duoc.galpones.ui.resumen.ResumenScreen
 
 private const val DURACION_TRANSICION = 300
 
+/** Mapa de navegación: cada ruta abre su pantalla. Parte en Login y usa transiciones de 300 ms. */
 @Composable
 fun AppNavHost(navController: NavHostController = rememberNavController()) {
 
@@ -61,8 +62,10 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
         }
     ) {
 
+        // Rutas del módulo Alertas y Acciones (Integrante B): login, alertas, acción y resumen.
         composable(Rutas.LOGIN) {
             LoginScreen(
+                // Al ingresar se borra Login de la pila, para que "atrás" no vuelva al formulario.
                 onIngresoExitoso = {
                     navController.navigate(Rutas.INICIO) {
                         popUpTo(Rutas.LOGIN) { inclusive = true }
@@ -99,6 +102,7 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
 
         // ---- Integrante A: módulo Monitoreo ----
         composable(Rutas.INICIO) {
+            // Solo jefatura ve la opción Resumen; para los demás onResumen es null y el menú no la muestra.
             val esJefatura = SesionActual.usuario?.rol == Rol.JEFATURA
             InicioScreen(
                 onGalponClick = { id -> navController.navigate(Rutas.detalle(id)) },
@@ -111,6 +115,7 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
                 } else {
                     null
                 },
+                // Cerrar sesión borra al usuario y deja Login como única pantalla de la pila.
                 onCerrarSesion = {
                     SesionActual.cerrar()
                     navController.navigate(Rutas.LOGIN) {

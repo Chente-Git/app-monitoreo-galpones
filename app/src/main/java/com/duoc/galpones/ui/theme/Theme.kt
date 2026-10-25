@@ -6,6 +6,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
+/** Asigna cada color de la paleta clara a su rol en Material 3 (primary, surface, error...). */
 private val EsquemaClaro = lightColorScheme(
     primary = VerdePrimario,
     onPrimary = VerdeSobrePrimario,
@@ -30,6 +31,7 @@ private val EsquemaClaro = lightColorScheme(
     onError = SobreErrorClaro
 )
 
+/** Asigna cada color de la paleta oscura a su rol en Material 3. */
 private val EsquemaOscuro = darkColorScheme(
     primary = VerdePrimarioOscuro,
     onPrimary = SobreVerdePrimarioOscuro,
@@ -56,6 +58,7 @@ private val EsquemaOscuro = darkColorScheme(
 
 
 
+/** Tema de la app: elige el esquema claro u oscuro según el modo del sistema y envuelve la UI. */
 @Composable
 fun MonitoreoGalponesTheme(
     modoOscuro: Boolean = isSystemInDarkTheme(),

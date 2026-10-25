@@ -31,11 +31,13 @@ data class GalponUi(
     val estado: EstadoGalpon
 )
 
+/** Estado de la pantalla Inicio: si está cargando y la lista de galpones. */
 data class InicioUiState(
     val cargando: Boolean = true,
     val galpones: List<GalponUi> = emptyList()
 )
 
+/** Prepara la lista de Inicio y avisa (notificación y vibración) cuando un galpón entra en crítico. */
 class InicioViewModel(
     private val repositorio: GalponRepository,
     private val notificador: NotificadorCritico,
@@ -48,11 +50,13 @@ class InicioViewModel(
     private val local = Locale("es", "CL")
     private val formatoFecha = SimpleDateFormat("dd-MM-yyyy · HH:mm", local)
 
+    /** Última lista calculada, para reintentar los avisos al conceder el permiso. */
     private var ultimaLista: List<GalponUi> = emptyList()
 
     init {
         viewModelScope.launch {
             repositorio.cargarInicialesSiVacio()
+            // Une galpones y últimas mediciones: cada cambio en Room recalcula la lista.
             combine(
                 repositorio.observarGalpones(),
                 repositorio.observarUltimasMediciones()
@@ -72,6 +76,7 @@ class InicioViewModel(
         avisarCriticos(ultimaLista)
     }
 
+    /** Convierte galpón y medición en textos listos. Sin medición muestra guiones y estado normal. */
     private fun aUi(galpon: Galpon, medicion: Medicion?): GalponUi {
         val estado = if (medicion != null) {
             CalculadorEstado.calcular(medicion, galpon)
@@ -115,6 +120,7 @@ class InicioViewModel(
         if (huboAviso) vibrador.vibrarAlerta()
     }
 
+    /** Fábrica que entrega las dependencias al ViewModel, porque Android no le pasa parámetros solo. */
     class Factory(
         private val repositorio: GalponRepository,
         private val notificador: NotificadorCritico,

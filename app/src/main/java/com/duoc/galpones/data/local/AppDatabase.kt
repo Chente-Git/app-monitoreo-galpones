@@ -15,6 +15,7 @@ import com.duoc.galpones.data.local.entity.GalponEntity
 import com.duoc.galpones.data.local.entity.MedicionEntity
 import com.duoc.galpones.data.local.entity.ObservacionEntity
 
+/** Base de datos Room. Si sube la versión se borra y se recarga desde la FakeApi. */
 @Database(
     entities = [
         AlertaEntity::class,
@@ -35,9 +36,11 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun observacionDao(): ObservacionDao
 
     companion object {
+        // Volatile y synchronized evitan crear dos bases si dos hilos la piden a la vez.
         @Volatile
         private var instancia: AppDatabase? = null
 
+        /** Entrega siempre la misma base de datos: hay una sola instancia para toda la app. */
         fun obtener(context: Context): AppDatabase =
             instancia ?: synchronized(this) {
                 instancia ?: Room.databaseBuilder(

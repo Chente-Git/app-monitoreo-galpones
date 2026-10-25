@@ -42,6 +42,7 @@ import com.duoc.galpones.ui.permisos.ResultadoPermiso
 import com.duoc.galpones.ui.permisos.rememberManejadorPermiso
 import com.duoc.galpones.ui.permisos.PermisosSesion
 
+/** Lista de alertas activas (no resueltas). Al tocar una se abre el formulario de acción. */
 @Composable
 fun AlertasScreen(
     onVolver: () -> Unit,
@@ -128,6 +129,7 @@ fun AlertasScreen(
     }
 }
 
+/** Tarjeta de una alerta, con una franja del color de su nivel a la izquierda. */
 @Composable
 private fun TarjetaAlerta(alerta: AlertaUi, onClick: () -> Unit) {
     Card(

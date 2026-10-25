@@ -8,6 +8,7 @@ import com.duoc.galpones.domain.repository.AccionRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+/** Guarda y lee acciones en Room, convirtiendo entre entidad y modelo de dominio. */
 class AccionRepositoryImpl(
     private val dao: AccionDao
 ) : AccionRepository {

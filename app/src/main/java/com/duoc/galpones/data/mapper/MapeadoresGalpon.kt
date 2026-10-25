@@ -7,6 +7,7 @@ import com.duoc.galpones.domain.model.Galpon
 import com.duoc.galpones.domain.model.Medicion
 import com.duoc.galpones.domain.model.Observacion
 
+/** Convierten entre entidades de Room y modelos de dominio, para que domain no dependa de Room. */
 fun GalponEntity.toDomain() = Galpon(
     id = id, granja = granja, nombre = nombre,
     tempMin = tempMin, tempMax = tempMax, humMin = humMin, humMax = humMax

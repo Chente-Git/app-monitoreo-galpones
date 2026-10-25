@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/** Estado del formulario de observación: galpón, texto, errores y si está guardando. */
 data class ObservacionUiState(
     val galpones: List<OpcionGalpon> = emptyList(),
     val galponId: Int? = null,
@@ -25,6 +26,7 @@ data class ObservacionUiState(
     val guardadoExitoso: Boolean = false
 )
 
+/** Maneja el formulario de observación: valida con ValidadorObservacion y guarda en Room. */
 class ObservacionViewModel(
     galponRepositorio: GalponRepository,
     private val observacionRepositorio: ObservacionRepository
@@ -43,16 +45,20 @@ class ObservacionViewModel(
         }
     }
 
+    /** Guarda el galpón elegido y borra el error de ese campo. */
     fun onGalponChange(id: Int) {
         _estado.update { it.copy(galponId = id, errorGalpon = null, errorGeneral = null) }
     }
 
+    /** Guarda lo escrito y borra el error de ese campo. */
     fun onDescripcionChange(valor: String) {
         _estado.update { it.copy(descripcion = valor, errorDescripcion = null, errorGeneral = null) }
     }
 
+    /** Valida y, si todo está bien, guarda. Si hay errores los muestra y no toca la base de datos. */
     fun onGuardar() {
         val actual = _estado.value
+        // Ignora un segundo toque mientras ya se está guardando.
         if (actual.guardando) return
 
         val resultado = ValidadorObservacion.validar(actual.galponId, actual.descripcion)
@@ -106,6 +112,7 @@ class ObservacionViewModel(
         }
     }
 
+    /** Fábrica que entrega las dependencias al ViewModel, porque Android no le pasa parámetros solo. */
     class Factory(
         private val galponRepositorio: GalponRepository,
         private val observacionRepositorio: ObservacionRepository

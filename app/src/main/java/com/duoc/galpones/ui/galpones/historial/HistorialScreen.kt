@@ -34,6 +34,7 @@ import com.duoc.galpones.ui.components.EstadoVacio
 import com.duoc.galpones.ui.components.SemaforoEstado
 import com.duoc.galpones.ui.components.contenedorApp
 
+/** Mediciones de todos los galpones o de uno solo, filtradas con chips. Cada una lleva su semáforo. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistorialScreen(

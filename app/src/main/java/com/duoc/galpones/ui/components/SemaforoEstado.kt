@@ -29,12 +29,14 @@ import com.duoc.galpones.ui.theme.SemaforoAdvertencia
 import com.duoc.galpones.ui.theme.SemaforoCritico
 import com.duoc.galpones.ui.theme.SemaforoNormal
 
+/** Color de cada estado. Es fijo: no cambia con el tema claro u oscuro. */
 fun colorSemaforo(estado: EstadoGalpon): Color = when (estado) {
     EstadoGalpon.NORMAL -> SemaforoNormal
     EstadoGalpon.ADVERTENCIA -> SemaforoAdvertencia
     EstadoGalpon.CRITICO -> SemaforoCritico
 }
 
+/** Palabra que acompaña al color, para no depender solo del color. */
 fun textoEstado(estado: EstadoGalpon): String = when (estado) {
     EstadoGalpon.NORMAL -> "Normal"
     EstadoGalpon.ADVERTENCIA -> "Advertencia"
@@ -73,6 +75,7 @@ fun SemaforoEstado(
     }
 }
 
+/** Punto de color; solo pulsa (crece y se achica) cuando pulsar es true. */
 @Composable
 private fun PuntoSemaforo(color: Color, pulsar: Boolean) {
     // La animación infinita solo existe mientras el estado es crítico.

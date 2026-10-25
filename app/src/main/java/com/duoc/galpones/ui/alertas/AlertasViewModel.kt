@@ -29,11 +29,13 @@ data class AlertaUi(
     val hora: String
 )
 
+/** Estado de la pantalla Alertas: si está cargando y la lista de alertas activas. */
 data class AlertasUiState(
     val cargando: Boolean = true,
     val alertas: List<AlertaUi> = emptyList()
 )
 
+/** Carga las alertas la primera vez y luego sigue las alertas activas desde Room. */
 class AlertasViewModel(
     private val repositorio: AlertaRepository
 ) : ViewModel() {
@@ -54,6 +56,7 @@ class AlertasViewModel(
         }
     }
 
+    /** Convierte la alerta en textos listos: nivel, estado, temperatura, humedad, fecha y hora. */
     private fun aUi(alerta: Alerta): AlertaUi {
         val fecha = Date(alerta.fechaHora)
         return AlertaUi(
@@ -77,6 +80,7 @@ class AlertasViewModel(
         )
     }
 
+    /** Fábrica que entrega las dependencias al ViewModel, porque Android no le pasa parámetros solo. */
     class Factory(
         private val repositorio: AlertaRepository
     ) : ViewModelProvider.Factory {

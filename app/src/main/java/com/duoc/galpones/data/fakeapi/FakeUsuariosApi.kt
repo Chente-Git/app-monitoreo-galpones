@@ -7,7 +7,9 @@ import kotlinx.coroutines.delay
 /** Usuarios ficticios, uno por perfil, que alimentan el formulario de inicio de sesión. */
 object FakeUsuariosApi {
 
+    /** Tres usuarios de prueba, uno por rol. Sus claves se ven en el README. */
     suspend fun obtenerUsuarios(): List<Usuario> {
+        // El retardo simula la espera de una respuesta de red.
         delay(800)
         return listOf(
             Usuario(id = 1, nombre = "Carlos Rojas", correo = "operario@galpones.cl",

@@ -8,6 +8,7 @@ import com.duoc.galpones.domain.repository.ObservacionRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+/** Guarda y lee observaciones en Room, convirtiendo entre entidad y modelo de dominio. */
 class ObservacionRepositoryImpl(
     private val dao: ObservacionDao
 ) : ObservacionRepository {

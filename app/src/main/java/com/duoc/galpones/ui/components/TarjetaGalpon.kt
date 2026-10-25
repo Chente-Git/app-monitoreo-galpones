@@ -17,6 +17,7 @@ import com.duoc.galpones.domain.model.EstadoGalpon
 import com.duoc.galpones.ui.theme.MonitoreoGalponesTheme
 
 
+/** Tarjeta de un galpón en la lista de Inicio. Recibe los textos ya formateados. */
 @Composable
 fun TarjetaGalpon(
     nombre: String,
