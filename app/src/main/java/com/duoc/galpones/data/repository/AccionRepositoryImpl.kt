@@ -1,8 +1,8 @@
 package com.duoc.galpones.data.repository
 
 import com.duoc.galpones.data.local.dao.AccionDao
-import com.duoc.galpones.data.local.entity.toDomain
-import com.duoc.galpones.data.local.entity.toEntity
+import com.duoc.galpones.data.mapper.toDomain
+import com.duoc.galpones.data.mapper.toEntity
 import com.duoc.galpones.domain.model.Accion
 import com.duoc.galpones.domain.repository.AccionRepository
 import kotlinx.coroutines.flow.Flow

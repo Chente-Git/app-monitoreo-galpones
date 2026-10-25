@@ -2,8 +2,8 @@ package com.duoc.galpones.data.repository
 
 import com.duoc.galpones.data.fakeapi.FakeAlertasApi
 import com.duoc.galpones.data.local.dao.AlertaDao
-import com.duoc.galpones.data.local.entity.toDomain
-import com.duoc.galpones.data.local.entity.toEntity
+import com.duoc.galpones.data.mapper.toDomain
+import com.duoc.galpones.data.mapper.toEntity
 import com.duoc.galpones.domain.model.Alerta
 import com.duoc.galpones.domain.model.EstadoAlerta
 import com.duoc.galpones.domain.repository.AlertaRepository
@@ -22,7 +22,7 @@ class AlertaRepositoryImpl(
         dao.observarTodas().map { lista -> lista.map { it.toDomain() } }
 
     override fun observarActivas(): Flow<List<Alerta>> =
-        dao.observarActivas().map { lista -> lista.map { it.toDomain() } }
+        dao.observarActivas(EstadoAlerta.RESUELTA.name).map { lista -> lista.map { it.toDomain() } }
 
     override fun contarPorEstado(estado: EstadoAlerta): Flow<Int> =
         dao.contarPorEstado(estado.name)

@@ -89,8 +89,21 @@ class ObservacionViewModel(
         }
     }
 
+    /**
+     * Se llama después de cerrar el formulario: limpia los campos editados
+     * para que al reabrir no aparezcan la descripción y el galpón anteriores.
+     */
     fun guardadoProcesado() {
-        _estado.update { it.copy(guardadoExitoso = false) }
+        _estado.update {
+            it.copy(
+                guardadoExitoso = false,
+                galponId = null,
+                descripcion = "",
+                errorGalpon = null,
+                errorDescripcion = null,
+                errorGeneral = null
+            )
+        }
     }
 
     class Factory(

@@ -74,6 +74,7 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
 
         composable(Rutas.ALERTAS) {
             AlertasScreen(
+                onVolver = volver,
                 onAlertaClick = { id -> navController.navigate(Rutas.accion(id)) },
                 modifier = Modifier.statusBarsPadding()
             )
@@ -93,7 +94,7 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
         }
 
         composable(Rutas.RESUMEN) {
-            ResumenScreen(modifier = Modifier.statusBarsPadding())
+            ResumenScreen(onVolver = volver, modifier = Modifier.statusBarsPadding())
         }
 
         // ---- Integrante A: módulo Monitoreo ----
@@ -115,7 +116,8 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
                     navController.navigate(Rutas.LOGIN) {
                         popUpTo(Rutas.INICIO) { inclusive = true }
                     }
-                }
+                },
+                modifier = Modifier.statusBarsPadding()
             )
         }
 
@@ -129,20 +131,29 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
                 onVolver = volver,
                 onHistorial = { navController.navigate(Rutas.HISTORIAL) },
                 onUmbrales = { navController.navigate(Rutas.UMBRALES) },
-                onObservacion = { navController.navigate(Rutas.OBSERVACION) }
+                onObservacion = { navController.navigate(Rutas.OBSERVACION) },
+                modifier = Modifier.statusBarsPadding()
             )
         }
 
         composable(Rutas.HISTORIAL) {
-            HistorialScreen(onVolver = volver)
+            HistorialScreen(onVolver = volver, modifier = Modifier.statusBarsPadding())
         }
 
         composable(Rutas.UMBRALES) {
-            UmbralesScreen(onGuardado = volver, onCancelar = volver)
+            UmbralesScreen(
+                onGuardado = volver,
+                onCancelar = volver,
+                modifier = Modifier.statusBarsPadding()
+            )
         }
 
         composable(Rutas.OBSERVACION) {
-            ObservacionScreen(onGuardado = volver, onCancelar = volver)
+            ObservacionScreen(
+                onGuardado = volver,
+                onCancelar = volver,
+                modifier = Modifier.statusBarsPadding()
+            )
         }
     }
 }

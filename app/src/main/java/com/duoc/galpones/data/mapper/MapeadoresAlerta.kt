@@ -1,5 +1,7 @@
-package com.duoc.galpones.data.local.entity
+package com.duoc.galpones.data.mapper
 
+import com.duoc.galpones.data.local.entity.AccionEntity
+import com.duoc.galpones.data.local.entity.AlertaEntity
 import com.duoc.galpones.domain.model.Accion
 import com.duoc.galpones.domain.model.Alerta
 import com.duoc.galpones.domain.model.EstadoAlerta

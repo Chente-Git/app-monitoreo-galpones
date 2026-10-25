@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.duoc.galpones.domain.SesionActual
-import com.duoc.galpones.domain.ValidadorAccion
+import com.duoc.galpones.domain.validation.ValidadorAccion
 import com.duoc.galpones.domain.model.Accion
 import com.duoc.galpones.domain.model.EstadoAlerta
 import com.duoc.galpones.domain.model.EstadoGalpon
