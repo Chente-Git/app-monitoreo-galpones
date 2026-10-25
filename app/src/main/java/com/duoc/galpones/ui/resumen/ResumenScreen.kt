@@ -33,6 +33,7 @@ import com.duoc.galpones.domain.model.EstadoGalpon
 import com.duoc.galpones.ui.components.BarraSuperiorVolver
 import com.duoc.galpones.ui.components.colorSemaforo
 
+/** Resumen para jefatura: alertas contadas por estado y lista de las críticas activas. */
 @Composable
 fun ResumenScreen(
     onVolver: () -> Unit,
@@ -84,6 +85,7 @@ fun ResumenScreen(
     }
 }
 
+/** Tarjeta con un número grande y su título, por ejemplo 4 Pendientes. */
 @Composable
 private fun TarjetaConteo(titulo: String, cantidad: Int, modifier: Modifier = Modifier) {
     Card(modifier = modifier) {
@@ -105,6 +107,7 @@ private fun TarjetaConteo(titulo: String, cantidad: Int, modifier: Modifier = Mo
     }
 }
 
+/** Tarjeta de una alerta crítica activa, con franja roja a la izquierda. */
 @Composable
 private fun TarjetaCritica(alerta: AlertaCriticaUi) {
     Card(modifier = Modifier.fillMaxWidth()) {

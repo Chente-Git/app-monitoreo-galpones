@@ -31,11 +31,13 @@ class NotificadorCritico(private val context: Context) {
     ): Boolean {
         if (!puedeNotificar()) return false
 
+        // Al tocar el aviso se abre la app sin apilar otra pantalla encima.
         val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or
                     Intent.FLAG_ACTIVITY_SINGLE_TOP or
                     Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
+        // El galponId como requestCode da un PendingIntent distinto a cada galpón.
         val pendiente = PendingIntent.getActivity(
             context,
             galponId,
@@ -53,10 +55,12 @@ class NotificadorCritico(private val context: Context) {
             .setContentIntent(pendiente)
             .build()
 
+        // Mismo id por galpón: un aviso nuevo reemplaza al anterior en vez de apilarse.
         NotificationManagerCompat.from(context).notify(ID_BASE + galponId, notificacion)
         return true
     }
 
+    /** Crea el canal de alertas críticas con importancia alta y vibración. */
     private fun crearCanal() {
         val canal = NotificationChannel(
             CANAL_ID,
@@ -72,6 +76,7 @@ class NotificadorCritico(private val context: Context) {
 
     companion object {
         const val CANAL_ID = "alertas_criticas"
+        /** Desde este número se arman los ids de notificación: 1000 más el id del galpón. */
         private const val ID_BASE = 1000
     }
 }

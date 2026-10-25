@@ -2,6 +2,7 @@ package com.duoc.galpones.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+/** Paleta del tema claro. Los nombres Sobre... son el color del texto que va encima de cada fondo. */
 val VerdePrimario = Color(0xFF2E6B3A)
 val VerdeSobrePrimario = Color(0xFFFFFFFF)
 val VerdeContenedor = Color(0xFFB7F2BD)
@@ -22,6 +23,7 @@ val BordeClaro = Color(0xFF727970)
 val ErrorClaro = Color(0xFFBA1A1A)
 val SobreErrorClaro = Color(0xFFFFFFFF)
 
+/** Paleta del tema oscuro, con los mismos roles que la clara. */
 val VerdePrimarioOscuro = Color(0xFF9CD5A2)
 val SobreVerdePrimarioOscuro = Color(0xFF003915)
 val VerdeContenedorOscuro = Color(0xFF135225)
@@ -43,6 +45,7 @@ val ErrorOscuro = Color(0xFFFFB4AB)
 val SobreErrorOscuro = Color(0xFF690005)
 
 
+/** Colores del semáforo: son iguales en tema claro y oscuro para que el significado no cambie. */
 val SemaforoNormal = Color(0xFF2E7D32)
 val SemaforoAdvertencia = Color(0xFFF9A825)
 val SemaforoCritico = Color(0xFFD32F2F)

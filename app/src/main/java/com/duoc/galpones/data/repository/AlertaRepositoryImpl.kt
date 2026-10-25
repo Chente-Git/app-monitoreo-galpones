@@ -12,11 +12,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
+/** Fuente de alertas: la UI lee de Room y la FakeApi solo llena la tabla la primera vez. */
 class AlertaRepositoryImpl(
     private val dao: AlertaDao,
     private val api: FakeAlertasApi
 ) : AlertaRepository {
 
+    /** Evita que dos llamadas a la vez carguen los datos iniciales duplicados. */
     private val mutex = Mutex()
     override fun observarTodas(): Flow<List<Alerta>> =
         dao.observarTodas().map { lista -> lista.map { it.toDomain() } }
@@ -35,6 +37,7 @@ class AlertaRepositoryImpl(
 
     override suspend fun cargarInicialesSiVacio() {
         mutex.withLock {
+            // Se revisa dentro del candado: la segunda llamada ya encuentra la tabla llena.
             if (dao.contar() == 0) {
                 val alertas = api.obtenerAlertas()
                 dao.insertarTodas(alertas.map { it.toEntity() })

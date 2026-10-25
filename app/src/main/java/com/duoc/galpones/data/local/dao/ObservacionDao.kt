@@ -6,6 +6,7 @@ import androidx.room.Query
 import com.duoc.galpones.data.local.entity.ObservacionEntity
 import kotlinx.coroutines.flow.Flow
 
+/** Consultas de la tabla observaciones. Las usa ObservacionRepositoryImpl. */
 @Dao
 interface ObservacionDao {
 

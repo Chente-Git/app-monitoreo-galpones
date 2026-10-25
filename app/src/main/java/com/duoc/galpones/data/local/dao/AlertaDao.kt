@@ -7,12 +7,14 @@ import androidx.room.Query
 import com.duoc.galpones.data.local.entity.AlertaEntity
 import kotlinx.coroutines.flow.Flow
 
+/** Consultas de la tabla alertas. Devuelven Flow: la pantalla se actualiza sola al cambiar los datos. */
 @Dao
 interface AlertaDao {
 
     @Query("SELECT * FROM alertas ORDER BY fechaHora DESC")
     fun observarTodas(): Flow<List<AlertaEntity>>
 
+    /** Alertas que no están resueltas. El estado "resuelta" llega como parámetro desde el repositorio. */
     @Query("SELECT * FROM alertas WHERE estado != :estadoResuelta ORDER BY fechaHora DESC")
     fun observarActivas(estadoResuelta: String): Flow<List<AlertaEntity>>
 
@@ -22,6 +24,7 @@ interface AlertaDao {
     @Query("SELECT COUNT(*) FROM alertas WHERE estado = :estado")
     fun contarPorEstado(estado: String): Flow<Int>
 
+    /** Sirve para saber si la tabla está vacía y cargar los datos iniciales. */
     @Query("SELECT COUNT(*) FROM alertas")
     suspend fun contar(): Int
 

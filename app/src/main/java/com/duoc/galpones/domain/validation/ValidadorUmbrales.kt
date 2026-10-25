@@ -1,5 +1,6 @@
 package com.duoc.galpones.domain.validation
 
+/** Error por campo (null si está bien). esValido es true cuando ningún campo tiene error. */
 data class ResultadoValidacionUmbrales(
     val errorGalpon: String? = null,
     val errorTempMin: String? = null,
@@ -12,8 +13,10 @@ data class ResultadoValidacionUmbrales(
                 errorHumMin == null && errorHumMax == null
 }
 
+/** Reglas del formulario de umbrales: rangos permitidos y mínimo menor que máximo. Sin Android. */
 object ValidadorUmbrales {
 
+    /** Límites permitidos: temperatura en °C y humedad en %. */
     const val TEMP_MINIMA = 0.0
     const val TEMP_MAXIMA = 50.0
     const val HUM_MINIMA = 0.0
@@ -28,6 +31,7 @@ object ValidadorUmbrales {
     fun validarGalpon(galponId: Int?): String? =
         if (galponId == null) "Selecciona un galpón" else null
 
+    /** Revisa que haya texto, que sea un número y que esté dentro del rango permitido. */
     private fun validarValor(
         texto: String,
         descripcion: String,
@@ -51,6 +55,7 @@ object ValidadorUmbrales {
             null
         }
 
+    /** Revisa todos los campos juntos, para mostrar todos los errores a la vez. */
     fun validar(
         galponId: Int?,
         tempMin: String,
@@ -61,6 +66,7 @@ object ValidadorUmbrales {
         val errorTempMin = validarValor(
             tempMin, "la temperatura mínima", TEMP_MINIMA, TEMP_MAXIMA, "°C"
         )
+        // El error de rango manda; el de orden solo se revisa si el máximo ya es válido.
         val errorTempMax = validarValor(
             tempMax, "la temperatura máxima", TEMP_MINIMA, TEMP_MAXIMA, "°C"
         ) ?: validarOrden(errorTempMin, parsear(tempMin), parsear(tempMax))

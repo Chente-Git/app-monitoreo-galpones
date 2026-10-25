@@ -9,6 +9,7 @@ class Vibrador(context: Context) {
 
     private val vibrador: Vibrator? = context.getSystemService(Vibrator::class.java)
 
+    /** Vibra 400 ms, pausa 200 y vibra 400. Si el equipo no vibra, no hace nada. */
     fun vibrarAlerta() {
         val servicio = vibrador ?: return
         if (!servicio.hasVibrator()) return

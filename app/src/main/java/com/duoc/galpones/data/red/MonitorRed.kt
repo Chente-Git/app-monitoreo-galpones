@@ -15,6 +15,7 @@ class MonitorRed(context: Context) {
     private val connectivityManager =
         context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
+    /** Emite true o false cada vez que cambia la conexión. MainActivity lo usa para el banner. */
     val conectado: Flow<Boolean> = callbackFlow {
         val callback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
@@ -37,6 +38,7 @@ class MonitorRed(context: Context) {
         awaitClose { connectivityManager.unregisterNetworkCallback(callback) }
     }.distinctUntilChanged()
 
+    /** Consulta la red actual al empezar, antes de que el sistema avise de algún cambio. */
     private fun hayRedActiva(): Boolean {
         val red = connectivityManager.activeNetwork ?: return false
         val capacidades = connectivityManager.getNetworkCapabilities(red) ?: return false

@@ -33,6 +33,7 @@ import com.duoc.galpones.ui.components.EstadoVacio
 import com.duoc.galpones.ui.components.SemaforoEstado
 import com.duoc.galpones.ui.components.contenedorApp
 
+/** Detalle de un galpón: estado, última medición, umbrales y observaciones, con botones a otras pantallas. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetalleScreen(

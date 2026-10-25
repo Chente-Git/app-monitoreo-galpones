@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+/** Opción de la lista de galpones: el id se guarda y el texto se muestra. */
 data class OpcionGalpon(val id: Int, val texto: String)
 
 /** Lista de galpones para elegir uno, con mensaje de error animado. */

@@ -2,6 +2,7 @@ package com.duoc.galpones.domain.validation
 
 import com.duoc.galpones.domain.model.TipoAccion
 
+/** Error por campo (null si está bien). esValido es true cuando ningún campo tiene error. */
 data class ResultadoValidacionAccion(
     val errorAlerta: String? = null,
     val errorTipo: String? = null,
@@ -11,8 +12,10 @@ data class ResultadoValidacionAccion(
         get() = errorAlerta == null && errorTipo == null && errorDescripcion == null
 }
 
+/** Reglas del formulario de acción. Sin Android: se puede probar con tests unitarios. */
 object ValidadorAccion {
 
+    /** Mínimo de caracteres para que la descripción de la acción diga algo útil. */
     const val LARGO_MINIMO_DESCRIPCION = 10
 
     fun validarAlerta(alertaId: Long?): String? =
@@ -28,6 +31,7 @@ object ValidadorAccion {
         else -> null
     }
 
+    /** Revisa todos los campos juntos, para mostrar todos los errores a la vez. */
     fun validar(alertaId: Long?, tipo: TipoAccion?, descripcion: String): ResultadoValidacionAccion =
         ResultadoValidacionAccion(
             errorAlerta = validarAlerta(alertaId),

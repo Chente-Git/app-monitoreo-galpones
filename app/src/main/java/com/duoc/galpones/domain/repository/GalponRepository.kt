@@ -4,6 +4,7 @@ import com.duoc.galpones.domain.model.Galpon
 import com.duoc.galpones.domain.model.Medicion
 import kotlinx.coroutines.flow.Flow
 
+/** Contrato para leer galpones y mediciones y editar umbrales. Lo implementa GalponRepositoryImpl. */
 interface GalponRepository {
     fun observarGalpones(): Flow<List<Galpon>>
     fun observarGalpon(id: Int): Flow<Galpon?>

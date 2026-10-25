@@ -10,9 +10,12 @@ import kotlinx.coroutines.delay
  */
 object FakeGalponesApi {
 
+    /** Separación entre una medición y la siguiente: 30 minutos, en milisegundos. */
     private const val INTERVALO_MEDICIONES = 30 * 60_000L
 
+    /** Cuatro galpones de dos granjas, cada uno con sus umbrales iniciales. */
     suspend fun obtenerGalpones(): List<Galpon> {
+        // El retardo simula la espera de una respuesta de red.
         delay(1000)
         return listOf(
             Galpon(id = 1, granja = "Granja Norte", nombre = "Galpón 1",

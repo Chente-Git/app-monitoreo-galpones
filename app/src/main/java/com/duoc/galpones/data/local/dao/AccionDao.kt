@@ -6,6 +6,7 @@ import androidx.room.Query
 import com.duoc.galpones.data.local.entity.AccionEntity
 import kotlinx.coroutines.flow.Flow
 
+/** Consultas de la tabla acciones. Las usa AccionRepositoryImpl. */
 @Dao
 interface AccionDao {
 

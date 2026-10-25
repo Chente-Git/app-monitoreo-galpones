@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/** Estado del formulario de login: lo escrito, el perfil elegido, errores y carga. */
 data class LoginUiState(
     val correo: String = "",
     val clave: String = "",
@@ -24,6 +25,7 @@ data class LoginUiState(
     val ingresoExitoso: Boolean = false
 )
 
+/** Valida el formulario y busca al usuario en FakeUsuariosApi. Si coincide, inicia la sesión. */
 class LoginViewModel : ViewModel() {
 
     private val _estado = MutableStateFlow(LoginUiState())
@@ -41,6 +43,7 @@ class LoginViewModel : ViewModel() {
         _estado.update { it.copy(perfil = valor, errorPerfil = null, errorGeneral = null) }
     }
 
+    /** Valida los campos y luego busca al usuario. Con errores no consulta la FakeApi. */
     fun onIngresar() {
         val actual = _estado.value
         if (actual.cargando) return
@@ -60,6 +63,7 @@ class LoginViewModel : ViewModel() {
         viewModelScope.launch {
             _estado.update { it.copy(cargando = true, errorGeneral = null) }
             val usuarios = FakeUsuariosApi.obtenerUsuarios()
+            // Deben coincidir el correo (sin importar mayúsculas), la clave y el perfil elegido.
             val usuario = usuarios.firstOrNull {
                 it.correo.equals(actual.correo.trim(), ignoreCase = true) &&
                         it.clave == actual.clave &&
@@ -79,6 +83,7 @@ class LoginViewModel : ViewModel() {
         }
     }
 
+    /** Apaga la señal de ingreso para que no se repita al volver a la pantalla. */
     fun ingresoProcesado() {
         _estado.update { it.copy(ingresoExitoso = false) }
     }

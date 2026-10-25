@@ -1,5 +1,6 @@
 package com.duoc.galpones.ui.navigation
 
+/** Nombres de las rutas de navegación. Las que llevan argumento se arman con sus funciones. */
 object Rutas {
     const val ARG_GALPON_ID = "galponId"
     const val ARG_ALERTA_ID = "alertaId"
@@ -14,6 +15,7 @@ object Rutas {
     const val ACCION = "accion/{$ARG_ALERTA_ID}"
     const val RESUMEN = "resumen"
 
+    /** Arma la ruta con el id ya puesto, por ejemplo detalle/2. */
     fun detalle(galponId: Int) = "detalle/$galponId"
     fun accion(alertaId: Long) = "accion/$alertaId"
 }

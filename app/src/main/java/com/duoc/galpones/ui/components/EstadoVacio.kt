@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.duoc.galpones.ui.theme.MonitoreoGalponesTheme
 
 
+/** Pantalla vacía con ícono y mensaje, para cuando no hay datos que mostrar. */
 @Composable
 fun EstadoVacio(
     titulo: String,

@@ -15,12 +15,14 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/** Observación lista para mostrar, con la fecha ya formateada. */
 data class ObservacionUi(
     val id: Long,
     val texto: String,
     val fecha: String
 )
 
+/** Estado de la pantalla Detalle. Si el galpón no existe, encontrado es false. */
 data class DetalleUiState(
     val cargando: Boolean = true,
     val encontrado: Boolean = true,
@@ -35,6 +37,7 @@ data class DetalleUiState(
     val observaciones: List<ObservacionUi> = emptyList()
 )
 
+/** Junta galpón, última medición y observaciones en un solo estado para Detalle. */
 class DetalleViewModel(
     galponId: Int,
     galponRepositorio: GalponRepository,
@@ -77,10 +80,12 @@ class DetalleViewModel(
         }
     }.stateIn(
         scope = viewModelScope,
+        // Sigue escuchando Room 5 s sin pantalla (por ejemplo al girar el teléfono) y luego se detiene.
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = DetalleUiState()
     )
 
+    /** Fábrica que entrega las dependencias al ViewModel, porque Android no le pasa parámetros solo. */
     class Factory(
         private val galponId: Int,
         private val galponRepositorio: GalponRepository,

@@ -8,6 +8,7 @@ import com.duoc.galpones.domain.model.EstadoAlerta
 import com.duoc.galpones.domain.model.EstadoGalpon
 import com.duoc.galpones.domain.model.TipoAccion
 
+/** Convierten entre entidades de Room y modelos de dominio, para que domain no dependa de Room. */
 fun AlertaEntity.toDomain() = Alerta(
     id = id,
     galponId = galponId,

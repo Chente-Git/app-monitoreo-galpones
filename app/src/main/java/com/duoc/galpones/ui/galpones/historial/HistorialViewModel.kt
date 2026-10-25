@@ -17,8 +17,10 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/** Opción del filtro de galpones (un chip) en el historial. */
 data class FiltroGalpon(val id: Int, val nombre: String)
 
+/** Medición lista para mostrar, con textos formateados y su estado calculado. */
 data class MedicionUi(
     val id: Long,
     val galpon: String,
@@ -28,6 +30,7 @@ data class MedicionUi(
     val estado: EstadoGalpon
 )
 
+/** Estado de Historial: filtros, galpón elegido (null = todos) y mediciones. */
 data class HistorialUiState(
     val cargando: Boolean = true,
     val filtros: List<FiltroGalpon> = emptyList(),
@@ -35,6 +38,7 @@ data class HistorialUiState(
     val mediciones: List<MedicionUi> = emptyList()
 )
 
+/** Entrega el historial de mediciones y lo filtra por galpón según el chip elegido. */
 @OptIn(ExperimentalCoroutinesApi::class)
 class HistorialViewModel(
     private val repositorio: GalponRepository
@@ -43,10 +47,12 @@ class HistorialViewModel(
     private val local = Locale("es", "CL")
     private val formatoFecha = SimpleDateFormat("dd-MM-yyyy · HH:mm", local)
 
+    /** Galpón elegido en el filtro. Null significa todos. */
     private val seleccionado = MutableStateFlow<Int?>(null)
 
     val estado: StateFlow<HistorialUiState> = combine(
         repositorio.observarGalpones(),
+        // Al cambiar el filtro se deja de escuchar la consulta anterior y se escucha la nueva.
         seleccionado.flatMapLatest { id -> repositorio.observarMediciones(id) },
         seleccionado
     ) { galpones, mediciones, id ->
@@ -72,6 +78,7 @@ class HistorialViewModel(
         )
     }.stateIn(
         scope = viewModelScope,
+        // Sigue escuchando Room 5 s sin pantalla (por ejemplo al girar el teléfono) y luego se detiene.
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = HistorialUiState()
     )
@@ -81,6 +88,7 @@ class HistorialViewModel(
         seleccionado.value = galponId
     }
 
+    /** Fábrica que entrega las dependencias al ViewModel, porque Android no le pasa parámetros solo. */
     class Factory(
         private val repositorio: GalponRepository
     ) : ViewModelProvider.Factory {

@@ -39,6 +39,7 @@ import com.duoc.galpones.ui.permisos.PermisosSesion
 import com.duoc.galpones.ui.permisos.ResultadoPermiso
 import com.duoc.galpones.ui.permisos.rememberManejadorPermiso
 
+/** Lista de galpones con su semáforo. También pide el permiso de notificaciones y ofrece el menú. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InicioScreen(
@@ -70,6 +71,7 @@ fun InicioScreen(
         Manifest.permission.POST_NOTIFICATIONS
     ) { resultado ->
         when (resultado) {
+            // Al conceder, avisa de inmediato los galpones que ya estaban críticos.
             ResultadoPermiso.CONCEDIDO -> {
                 mostrarDialogo = false
                 viewModel.reintentarAvisos()
@@ -78,6 +80,7 @@ fun InicioScreen(
                 rechazoPermanente = false
                 mostrarDialogo = true
             }
+            // Rechazo permanente: el diálogo ofrece abrir los ajustes en vez de reintentar.
             ResultadoPermiso.RECHAZADO_PERMANENTE -> {
                 rechazoPermanente = true
                 mostrarDialogo = true
@@ -85,6 +88,7 @@ fun InicioScreen(
         }
     }
 
+    // Pide el permiso una sola vez por sesión, aunque se vuelva a esta pantalla.
     LaunchedEffect(Unit) {
         if (!PermisosSesion.notificacionesSolicitadas) {
             PermisosSesion.notificacionesSolicitadas = true

@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/** Estado del formulario de acción: alerta, tipo, descripción y errores por campo. */
 data class AccionUiState(
     val alertaId: Long? = null,
     val resumenAlerta: String = "",
@@ -30,6 +31,7 @@ data class AccionUiState(
     val guardadoExitoso: Boolean = false
 )
 
+/** Valida y guarda una acción sobre una alerta, y deja la alerta en atención. */
 class AccionViewModel(
     private val alertaIdInicial: Long,
     private val alertaRepository: AlertaRepository,
@@ -41,6 +43,7 @@ class AccionViewModel(
 
     init {
         viewModelScope.launch {
+            // Carga la alerta para mostrar su resumen. Si no existe, muestra un error.
             val alerta = alertaRepository.obtenerPorId(alertaIdInicial)
             if (alerta == null) {
                 _estado.update { it.copy(errorAlerta = "No se encontró la alerta") }
@@ -68,8 +71,10 @@ class AccionViewModel(
         _estado.update { it.copy(descripcion = valor, errorDescripcion = null, errorGeneral = null) }
     }
 
+    /** Valida y, si todo está bien, guarda la acción. Si hay errores los muestra y no guarda. */
     fun onGuardar() {
         val actual = _estado.value
+        // Ignora un segundo toque mientras ya se está guardando.
         if (actual.guardando) return
 
         val alertaId = actual.alertaId
@@ -86,6 +91,7 @@ class AccionViewModel(
             return
         }
 
+        // La acción queda a nombre de quien inició sesión.
         val usuario = SesionActual.usuario
         if (usuario == null) {
             _estado.update { it.copy(errorGeneral = "Inicia sesión para registrar una acción") }
@@ -104,6 +110,7 @@ class AccionViewModel(
                         fechaHora = System.currentTimeMillis()
                     )
                 )
+                // Registrar una acción pasa la alerta a EN_ATENCION.
                 alertaRepository.actualizarEstado(alertaId, EstadoAlerta.EN_ATENCION)
                 _estado.update { it.copy(guardando = false, guardadoExitoso = true) }
             } catch (e: Exception) {
@@ -117,10 +124,12 @@ class AccionViewModel(
         }
     }
 
+    /** Apaga la señal de guardado para que la pantalla no se cierre sola otra vez. */
     fun guardadoProcesado() {
         _estado.update { it.copy(guardadoExitoso = false) }
     }
 
+    /** Fábrica que entrega las dependencias al ViewModel, porque Android no le pasa parámetros solo. */
     class Factory(
         private val alertaId: Long,
         private val alertaRepository: AlertaRepository,

@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+/** Franja que MainActivity muestra abajo cuando no hay internet. Los datos vienen de Room. */
 @Composable
 fun BannerSinConexion(modifier: Modifier = Modifier) {
     val colores = MaterialTheme.colorScheme

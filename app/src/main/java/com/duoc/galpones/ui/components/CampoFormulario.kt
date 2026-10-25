@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.duoc.galpones.ui.theme.MonitoreoGalponesTheme
 
 
+/** Campo de texto con ícono, ayuda y error animado. Lo usan Login, Acción, Umbrales y Observación. */
 @Composable
 fun CampoFormulario(
     valor: String,
@@ -69,6 +70,7 @@ fun CampoFormulario(
         },
         supportingText = {
             AnimatedContent(
+                // Mientras hay un error, reemplaza al texto de ayuda.
                 targetState = error ?: ayuda,
                 transitionSpec = {
                     (fadeIn(tween(200)) + slideInVertically(tween(200)) { -it / 2 }) togetherWith

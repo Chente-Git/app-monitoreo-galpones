@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/** Alerta crítica lista para mostrar en el resumen. */
 data class AlertaCriticaUi(
     val id: Long,
     val titulo: String,
@@ -22,6 +23,7 @@ data class AlertaCriticaUi(
     val fecha: String
 )
 
+/** Estado del Resumen: alertas contadas por estado y lista de las críticas activas. */
 data class ResumenUiState(
     val cargando: Boolean = true,
     val pendientes: Int = 0,
@@ -30,6 +32,7 @@ data class ResumenUiState(
     val criticas: List<AlertaCriticaUi> = emptyList()
 )
 
+/** Junta los conteos por estado y las alertas críticas activas para jefatura. */
 class ResumenViewModel(
     repositorio: AlertaRepository
 ) : ViewModel() {
@@ -65,10 +68,12 @@ class ResumenViewModel(
         )
     }.stateIn(
         scope = viewModelScope,
+        // Sigue escuchando Room 5 s sin pantalla (por ejemplo al girar el teléfono) y luego se detiene.
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = ResumenUiState()
     )
 
+    /** Fábrica que entrega las dependencias al ViewModel, porque Android no le pasa parámetros solo. */
     class Factory(
         private val repositorio: AlertaRepository
     ) : ViewModelProvider.Factory {
