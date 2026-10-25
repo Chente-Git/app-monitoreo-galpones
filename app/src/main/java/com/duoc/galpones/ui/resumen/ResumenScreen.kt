@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -29,10 +30,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.duoc.galpones.GalponesApp
 import com.duoc.galpones.domain.model.EstadoGalpon
+import com.duoc.galpones.ui.components.BarraSuperiorVolver
 import com.duoc.galpones.ui.components.colorSemaforo
 
 @Composable
 fun ResumenScreen(
+    onVolver: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ResumenViewModel = viewModel(
         factory = ResumenViewModel.Factory(
@@ -43,38 +46,37 @@ fun ResumenScreen(
 ) {
     val estado by viewModel.estado.collectAsState()
 
-    Box(modifier = modifier.fillMaxSize()) {
-        if (estado.cargando) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-        } else {
-            LazyColumn(
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                item {
-                    Text(
-                        text = "Resumen para jefatura",
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                }
-                item {
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        TarjetaConteo("Pendientes", estado.pendientes, Modifier.weight(1f))
-                        TarjetaConteo("En atención", estado.enAtencion, Modifier.weight(1f))
-                        TarjetaConteo("Resueltas", estado.resueltas, Modifier.weight(1f))
+    Scaffold(
+        modifier = modifier,
+        topBar = { BarraSuperiorVolver(titulo = "Resumen para jefatura", onVolver = onVolver) }
+    ) { padding ->
+        Box(modifier = Modifier.padding(padding).fillMaxSize()) {
+            if (estado.cargando) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            } else {
+                LazyColumn(
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    item {
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            TarjetaConteo("Pendientes", estado.pendientes, Modifier.weight(1f))
+                            TarjetaConteo("En atención", estado.enAtencion, Modifier.weight(1f))
+                            TarjetaConteo("Resueltas", estado.resueltas, Modifier.weight(1f))
+                        }
                     }
-                }
-                item {
-                    Text(
-                        text = "Alertas críticas activas",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                }
-                if (estado.criticas.isEmpty()) {
-                    item { Text("No hay alertas críticas activas") }
-                } else {
-                    items(estado.criticas, key = { it.id }) { alerta ->
-                        TarjetaCritica(alerta)
+                    item {
+                        Text(
+                            text = "Alertas críticas activas",
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
+                    if (estado.criticas.isEmpty()) {
+                        item { Text("No hay alertas críticas activas") }
+                    } else {
+                        items(estado.criticas, key = { it.id }) { alerta ->
+                            TarjetaCritica(alerta)
+                        }
                     }
                 }
             }

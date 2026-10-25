@@ -74,6 +74,7 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
 
         composable(Rutas.ALERTAS) {
             AlertasScreen(
+                onVolver = volver,
                 onAlertaClick = { id -> navController.navigate(Rutas.accion(id)) },
                 modifier = Modifier.statusBarsPadding()
             )
@@ -93,7 +94,7 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
         }
 
         composable(Rutas.RESUMEN) {
-            ResumenScreen(modifier = Modifier.statusBarsPadding())
+            ResumenScreen(onVolver = volver, modifier = Modifier.statusBarsPadding())
         }
 
         // ---- Integrante A: módulo Monitoreo ----

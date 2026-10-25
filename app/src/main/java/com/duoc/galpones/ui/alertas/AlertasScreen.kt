@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,6 +35,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.duoc.galpones.GalponesApp
+import com.duoc.galpones.ui.components.BarraSuperiorVolver
 import com.duoc.galpones.ui.components.colorSemaforo
 import com.duoc.galpones.ui.permisos.DialogoPermisoRechazado
 import com.duoc.galpones.ui.permisos.ResultadoPermiso
@@ -42,6 +44,7 @@ import com.duoc.galpones.ui.permisos.PermisosSesion
 
 @Composable
 fun AlertasScreen(
+    onVolver: () -> Unit,
     modifier: Modifier = Modifier,
     onAlertaClick: (Long) -> Unit = {},
     viewModel: AlertasViewModel = viewModel(
@@ -79,49 +82,48 @@ fun AlertasScreen(
         }
     }
 
-    Box(modifier = modifier.fillMaxSize()) {
-        when {
-            estado.cargando -> CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
-            )
-            estado.alertas.isEmpty() -> Text(
-                text = "No hay alertas activas",
-                modifier = Modifier.align(Alignment.Center)
-            )
-            else -> LazyColumn(
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                item {
-                    Text(
-                        text = "Alertas activas",
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                }
-                items(estado.alertas, key = { it.id }) { alerta ->
-                    TarjetaAlerta(
-                        alerta = alerta,
-                        onClick = { onAlertaClick(alerta.id) }
-                    )
+    Scaffold(
+        modifier = modifier,
+        topBar = { BarraSuperiorVolver(titulo = "Alertas activas", onVolver = onVolver) }
+    ) { padding ->
+        Box(modifier = Modifier.padding(padding).fillMaxSize()) {
+            when {
+                estado.cargando -> CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
+                )
+                estado.alertas.isEmpty() -> Text(
+                    text = "No hay alertas activas",
+                    modifier = Modifier.align(Alignment.Center)
+                )
+                else -> LazyColumn(
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(estado.alertas, key = { it.id }) { alerta ->
+                        TarjetaAlerta(
+                            alerta = alerta,
+                            onClick = { onAlertaClick(alerta.id) }
+                        )
+                    }
                 }
             }
-        }
 
-        if (mostrarDialogo) {
-            DialogoPermisoRechazado(
-                mensaje = "Las notificaciones te avisan cuando un galpón entra en estado crítico. " +
-                        "Sin este permiso no recibirás esos avisos.",
-                permanente = rechazoPermanente,
-                onReintentar = {
-                    mostrarDialogo = false
-                    manejadorPermiso.solicitar()
-                },
-                onAbrirAjustes = {
-                    mostrarDialogo = false
-                    manejadorPermiso.abrirAjustes()
-                },
-                onCerrar = { mostrarDialogo = false }
-            )
+            if (mostrarDialogo) {
+                DialogoPermisoRechazado(
+                    mensaje = "Las notificaciones te avisan cuando un galpón entra en estado crítico. " +
+                            "Sin este permiso no recibirás esos avisos.",
+                    permanente = rechazoPermanente,
+                    onReintentar = {
+                        mostrarDialogo = false
+                        manejadorPermiso.solicitar()
+                    },
+                    onAbrirAjustes = {
+                        mostrarDialogo = false
+                        manejadorPermiso.abrirAjustes()
+                    },
+                    onCerrar = { mostrarDialogo = false }
+                )
+            }
         }
     }
 }
