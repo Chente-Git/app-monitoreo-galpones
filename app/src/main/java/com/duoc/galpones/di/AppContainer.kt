@@ -13,6 +13,8 @@ import com.duoc.galpones.domain.repository.AccionRepository
 import com.duoc.galpones.domain.repository.AlertaRepository
 import com.duoc.galpones.domain.repository.GalponRepository
 import com.duoc.galpones.domain.repository.ObservacionRepository
+import com.duoc.galpones.platform.notificaciones.NotificadorCritico
+import com.duoc.galpones.platform.vibracion.Vibrador
 
 /**
  * Contenedor de dependencias manual. Los ViewModels obtienen de aquí
@@ -39,4 +41,10 @@ class AppContainer(context: Context) {
     }
 
     val monitorRed: MonitorRed by lazy { MonitorRed(context.applicationContext) }
+
+    val notificadorCritico: NotificadorCritico by lazy {
+        NotificadorCritico(context.applicationContext)
+    }
+
+    val vibrador: Vibrador by lazy { Vibrador(context.applicationContext) }
 }
