@@ -130,8 +130,28 @@ class UmbralesViewModel(
         }
     }
 
+    /**
+     * Se llama después de cerrar el formulario: limpia los campos editados
+     * para que al reabrir no aparezcan los valores de la edición anterior.
+     * Mantiene la lista de galpones, que viene del repositorio.
+     */
     fun guardadoProcesado() {
-        _estado.update { it.copy(guardadoExitoso = false) }
+        _estado.update {
+            it.copy(
+                guardadoExitoso = false,
+                galponId = null,
+                tempMin = "",
+                tempMax = "",
+                humMin = "",
+                humMax = "",
+                errorGalpon = null,
+                errorTempMin = null,
+                errorTempMax = null,
+                errorHumMin = null,
+                errorHumMax = null,
+                errorGeneral = null
+            )
+        }
     }
 
     private fun texto(valor: Double): String =
