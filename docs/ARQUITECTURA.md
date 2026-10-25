@@ -32,13 +32,13 @@ ui/
   navigation/     AppNavHost y rutas
   permisos/       ManejadorPermiso + diálogo de rechazo
   theme/          Material 3
-  <feature>/      <X>Screen + <X>ViewModel + <X>UiState por pantalla
+  <feature>/      <X>Screen + <X>ViewModel por pantalla (el <X>UiState va en el archivo del ViewModel)
 ```
 
 ## Flujo de datos típico
 
 1. `GalponesApp.onCreate()` arma el `AppContainer` y lanza una siembra en background: `cargarInicialesSiVacio()` solo escribe si las tablas están vacías, protegido por un `Mutex`.
-2. Cada ViewModel pide su repositorio al `contenedorApp()` (helper composable que lee el `GalponesApp` del `LocalContext`).
+2. Cada pantalla obtiene los repositorios con `contenedorApp()` (helper composable que lee el `GalponesApp` del `LocalContext`) y se los entrega al ViewModel mediante su `Factory`. `LoginViewModel` es la excepción: consulta `FakeUsuariosApi` directamente, sin repositorio.
 3. El ViewModel expone un `StateFlow<XUiState>` que la pantalla observa con `collectAsState()`.
 4. Los eventos de UI llaman funciones del ViewModel. Las reglas de validación están en `domain/validation/`; el ViewModel invoca al validador y guarda los mensajes de error en el `UiState`. Los composables solo pintan ese estado.
 
@@ -51,7 +51,7 @@ ui/
 
 ## Permisos y recursos nativos
 
-- `POST_NOTIFICATIONS` (Android 13+): se pide en Inicio una vez por sesión mediante `PermisosSesion.notificacionesSolicitadas`. El rechazo permanente se detecta con `shouldShowRequestPermissionRationale`.
+- `POST_NOTIFICATIONS` (Android 13+): se pide una vez por sesión, en la primera pantalla que se abre (Inicio o Alertas), mediante `PermisosSesion.notificacionesSolicitadas`. El rechazo permanente se detecta con `shouldShowRequestPermissionRationale`.
 - `VIBRATE`: no requiere diálogo de ejecución; se usa junto con la notificación crítica.
 - `ACCESS_NETWORK_STATE`: `MonitorRed` emite un `Flow<Boolean>` con la conectividad real y la UI muestra el banner "sin conexión".
 

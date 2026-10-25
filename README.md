@@ -2,6 +2,15 @@
 
 App Android para monitorear galpones y gestionar alertas y acciones. Desarrollada en Kotlin con Jetpack Compose y Material 3 para el ramo DSY1105.
 
+## Integrantes
+
+Proyecto de la Evaluación Parcial 2 de DSY1105 · Desarrollo de Aplicaciones Móviles, realizado en pareja.
+
+| Integrante | Usuario de GitHub | Módulo |
+|---|---|---|
+| Vicente Mendoza | [Chente-Git](https://github.com/Chente-Git) | Monitoreo: inicio, detalle, historial, umbrales, observaciones, notificación crítica, vibración y animación del semáforo |
+| Lucia Salazar | [Kodevlyu](https://github.com/Kodevlyu) | Alertas y acciones: inicio de sesión, alertas, registro de acciones, resumen para jefatura, navegación base, base de datos Room, estado de red y permisos |
+
 ## Descripción
 
 La app permite al personal de una granja avícola vigilar la temperatura y la humedad de sus galpones. Cada galpón se muestra con un semáforo (normal, advertencia o crítico) calculado a partir de umbrales configurables. Cuando un galpón pasa a estado crítico, la app envía una notificación y hace vibrar el dispositivo. El personal puede registrar observaciones y acciones, y la jefatura dispone de un resumen de alertas.
@@ -47,13 +56,15 @@ Los datos provienen de una API simulada (FakeApi) y se guardan en Room, por lo q
 
 ## Pasos de ejecución
 
+Requisitos: Android Studio reciente (incluye el JDK; el Gradle wrapper ya está en el repositorio) y un emulador o celular con Android 8.0 (API 26) o superior. Para recibir notificaciones se necesita Android 13 o superior, donde la app pide el permiso. La app usa datos simulados, así que no necesita servidor; solo hay que tener internet para clonar y sincronizar Gradle.
+
 1. Clonar el repositorio:
    ```
    git clone https://github.com/Chente-Git/app-monitoreo-galpones.git
    ```
 2. Abrir la carpeta clonada en Android Studio (File > Open).
 3. Esperar a que termine la sincronización de Gradle.
-4. Crear o elegir un emulador (se probó con Pixel 8) desde Device Manager.
+4. Crear o elegir un emulador desde Device Manager (la última prueba se hizo con un emulador Medium Phone, API 37).
 5. Presionar Run (el botón verde de play) para instalar y abrir la app.
 6. Iniciar sesión con uno de los usuarios de prueba. El perfil elegido en la pantalla debe coincidir con el rol del usuario.
 
@@ -95,13 +106,13 @@ galpones
     ├── login        Inicio de sesión
     ├── navigation   AppNavHost y rutas
     ├── permisos     Manejo de permisos
-    ├── resumen      Resumen de galpones
+    ├── resumen      Resumen de alertas para jefatura
     └── theme        Colores, tipografía y tema
 ```
 
 ## Pruebas
 
-Las reglas de validación tienen pruebas unitarias en `app/src/test/java/com/duoc/galpones/domain/validation/`:
+El proyecto tiene 31 pruebas unitarias. Las reglas de validación se prueban en `app/src/test/java/com/duoc/galpones/domain/validation/`:
 
 - `ValidadorLoginTest`
 - `ValidadorAccionTest`
@@ -113,4 +124,4 @@ Desde la terminal: `./gradlew testDebugUnitTest`.
 
 ## Arquitectura
 
-MVVM con AppContainer manual. Las reglas de validación viven en `domain/validation/` (`ValidadorLogin`, `ValidadorAccion`, `ValidadorUmbrales`, `ValidadorObservacion`) y los composables solo muestran el estado que entrega cada ViewModel. La UI lee desde Room; la red solo alimenta la base cuando las tablas están vacías, por lo que la app funciona sin conexión usando los datos ya guardados.
+MVVM con AppContainer manual. Las reglas de validación viven en `domain/validation/` (`ValidadorLogin`, `ValidadorAccion`, `ValidadorUmbrales`, `ValidadorObservacion`) y los composables solo muestran el estado que entrega cada ViewModel. La UI lee desde Room; la red solo alimenta la base cuando las tablas están vacías, por lo que la app funciona sin conexión usando los datos ya guardados. Más detalle en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
