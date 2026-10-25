@@ -30,12 +30,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.duoc.galpones.GalponesApp
-import com.duoc.galpones.domain.model.EstadoGalpon
+import com.duoc.galpones.ui.components.colorSemaforo
 import com.duoc.galpones.ui.permisos.DialogoPermisoRechazado
 import com.duoc.galpones.ui.permisos.ResultadoPermiso
 import com.duoc.galpones.ui.permisos.rememberManejadorPermiso
@@ -139,7 +138,7 @@ private fun TarjetaAlerta(alerta: AlertaUi, onClick: () -> Unit) {
                 modifier = Modifier
                     .width(8.dp)
                     .fillMaxHeight()
-                    .background(colorNivel(alerta.nivel))
+                    .background(colorSemaforo(alerta.nivel))
             )
             Column(
                 modifier = Modifier.padding(12.dp),
@@ -158,10 +157,4 @@ private fun TarjetaAlerta(alerta: AlertaUi, onClick: () -> Unit) {
             }
         }
     }
-}
-
-private fun colorNivel(nivel: EstadoGalpon): Color = when (nivel) {
-    EstadoGalpon.CRITICO -> Color(0xFFD32F2F)
-    EstadoGalpon.ADVERTENCIA -> Color(0xFFF9A825)
-    EstadoGalpon.NORMAL -> Color(0xFF2E7D32)
 }

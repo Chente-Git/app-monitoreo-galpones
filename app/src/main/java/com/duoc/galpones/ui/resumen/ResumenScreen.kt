@@ -24,11 +24,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.duoc.galpones.GalponesApp
+import com.duoc.galpones.domain.model.EstadoGalpon
+import com.duoc.galpones.ui.components.colorSemaforo
 
 @Composable
 fun ResumenScreen(
@@ -110,7 +111,7 @@ private fun TarjetaCritica(alerta: AlertaCriticaUi) {
                 modifier = Modifier
                     .width(8.dp)
                     .fillMaxHeight()
-                    .background(Color(0xFFD32F2F))
+                    .background(colorSemaforo(EstadoGalpon.CRITICO))
             )
             Column(
                 modifier = Modifier.padding(12.dp),
