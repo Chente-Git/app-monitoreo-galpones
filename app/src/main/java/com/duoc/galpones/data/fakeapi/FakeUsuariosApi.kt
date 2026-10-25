@@ -4,7 +4,7 @@ import com.duoc.galpones.domain.model.Rol
 import com.duoc.galpones.domain.model.Usuario
 import kotlinx.coroutines.delay
 
-/** Usuarios ficticios, uno por perfil. Sirven para el login de mañana. */
+/** Usuarios ficticios, uno por perfil, que alimentan el formulario de inicio de sesión. */
 object FakeUsuariosApi {
 
     suspend fun obtenerUsuarios(): List<Usuario> {
