@@ -1,4 +1,4 @@
-package com.duoc.galpones.domain
+package com.duoc.galpones.domain.validation
 
 import com.duoc.galpones.domain.model.Rol
 
